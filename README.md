@@ -1,2 +1,2 @@
-# cover-gpt-chrome
+# cover-gpt
 A chrome plugin generating cover letters using GPT API
