@@ -1,10 +1,10 @@
-chrome.storage.local.get('analysisResult', function(data) {
-    const contentElement = document.getElementById('analysisContent');
-    contentElement.textContent = data.analysisResult;
+chrome.storage.local.get('gptResult', function(data) {
+    const contentElement = document.getElementById('gptResultContent');
+    contentElement.textContent = data.gptResult;
   });
 
 document.getElementById('copyButton').addEventListener('click', function() {
-  const contentElement = document.getElementById('analysisContent');
+  const contentElement = document.getElementById('gptResultContent');
   const textToCopy = contentElement.textContent;
 
   copyTextToClipboard(textToCopy);
@@ -23,5 +23,4 @@ function copyTextToClipboard(text) {
       .catch(err => {
         console.error('Failed to copy text: ', err);
       });
-  }
-  
+}

@@ -24,13 +24,13 @@ function analyzeText(cvText, jobDescription) {
 
   const cvWords = "AZAZA"
   const jobDescriptionWords = "OLOLO"
-  const analysisResult = `
+  const gptResult = `
     Words in CV: ${cvWords}
     Words in Job Description: ${jobDescriptionWords}
     (Implement your detailed analysis logic here)
   `;
 
-  chrome.storage.local.set({'analysisResult': analysisResult}, function() {
+  chrome.storage.local.set({'gptResult': gptResult}, function() {
     showAnalysisPopup();
   });
 }
