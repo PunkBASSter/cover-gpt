@@ -9,33 +9,35 @@ chrome.runtime.onInstalled.addListener(function() {
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
   if (info.menuItemId === "analyzeJobDescription") {
     let jobDescription = info.selectionText;
-    chrome.storage.local.get('cvText', function(data) {
-      let cvText = data.cvText;
-      analyzeText(cvText, jobDescription);
-    });
+    analyzeText(jobDescription);
   }
 });
 
-function analyzeText(cvText, jobDescription) {
-  // Simple analysis: For this example, let's just count words.
-  // You can replace this with a more advanced analysis logic.
-  //const cvWords = cvText.split(/\s+/).length;
-  //const jobDescriptionWords = jobDescription.split(/\s+/).length;
+async function analyzeText(jobDescription) { 
+  const apiToken = await chrome.storage.sync.get('apiToken');
+  const promptFormat = await chrome.storage.sync.get('promptFormat');
+  const cv = await chrome.storage.sync.get('cvText');
+  
+  console.log(cv.cvText);
 
-  const cvWords = "AZAZA"
-  const jobDescriptionWords = "OLOLO"
-  const gptResult = `
-    Words in CV: ${cvWords}
-    Words in Job Description: ${jobDescriptionWords}
-    (Implement your detailed analysis logic here)
-  `;
+  const msg = stringFormat(promptFormat.promptFormat, jobDescription, cv.cvText);
+  
+  const messages = [
+    { role: 'user', content: msg }
+  ];
 
-  chrome.storage.local.set({'gptResult': gptResult}, function() {
-    showAnalysisPopup();
-  });
+  console.log(messages);
+
+  const gptResult = await sendChatToOpenAI(apiToken.apiToken, messages)
+    .then(responseText => {
+      console.log(responseText);
+      chrome.storage.local.set({'gptResult': responseText}, function() {
+        showResultWindow();
+      });
+    });
 }
 
-function showAnalysisPopup() {
+function showResultWindow() {
   chrome.windows.create({
     url: chrome.runtime.getURL('resultWindow.html'),
     type: 'popup',
@@ -44,25 +46,44 @@ function showAnalysisPopup() {
   });
 }
 
-function OLDshowAnalysisPopup(content) {
-  const resultHtml = `
-    <html>
-      <head>
-        <title>GPT Result</title>
-      </head>
-      <body>
-        <pre>${content}</pre>
-      </body>
-    </html>
-  `;
+const OPENAI_CHAT_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 
-  const encodedResult = btoa(unescape(encodeURIComponent(resultHtml)));
-  const url = 'data:text/html;base64,' + encodedResult;
+function sendChatToOpenAI(apiToken, messages) {
+  return fetch(OPENAI_CHAT_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiToken}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: messages
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+      return data.choices[0].message.content;
+    } else {
+      throw new Error('No response from OpenAI.');
+    }
+  })
+  .catch(error => {
+    console.error('Error calling OpenAI API:', error);
+  });
+}
 
-  chrome.windows.create({
-    url: url,
-    type: 'popup',
-    width: 400,
-    height: 300
+function stringFormat(formatStr, ...args) {
+  if (typeof formatStr !== 'string') {
+      throw new Error(`A string expected but ${typeof formatStr} given.}`);
+  }
+  
+  console.log(args)
+
+  return formatStr.replace(/{(\d+)}/g, function(match, number) { 
+      return typeof args[number] !== 'undefined'
+          ? args[number]
+          : match;
   });
 }
