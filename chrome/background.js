@@ -17,8 +17,6 @@ async function analyzeText(jobDescription) {
   const apiToken = await chrome.storage.sync.get('apiToken');
   const promptFormat = await chrome.storage.sync.get('promptFormat');
   const cv = await chrome.storage.sync.get('cvText');
-  
-  console.log(cv.cvText);
 
   const msg = stringFormat(promptFormat.promptFormat, jobDescription, cv.cvText);
   
