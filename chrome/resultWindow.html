@@ -1,37 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Analysis Result</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    button {
-      cursor: pointer;
-    }
-    .hidden {
-        display: none;
-    }
-    #tooltip {
-      position: absolute;
-      background-color: #555;
-      color: #fff;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      margin-left: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      opacity: 0.9;
-      white-space: nowrap;
-      z-index: 10;
-    }
-  </style>
+  <title>Cover Letter Result</title>
+  <link rel="stylesheet" href="resultWindow.css">
+  <link rel="stylesheet" href="loader.css">
+  <script src="gptClient.js"></script>
 </head>
 <body>
-  <pre id="gptResultContent"></pre>
+  <div id="loaderContainer" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <div id="loader" class="loader"></div>
+  </div>
+
+  <pre id="gptResultContent" style="display:none;"></pre>
   <button id="copyButton">
-    <img src="icons/clipboard-icon.png" alt="Clipboard Icon" width="40"> Copy To Clipboard
+    <img src="icons/clipboard-icon.png" alt="Clipboard Icon" width="20"> Copy To Clipboard
   </button>
   <span id="tooltip" class="hidden">Copied!</span>
   <script src="resultWindow.js"></script>

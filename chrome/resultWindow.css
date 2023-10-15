@@ -1,0 +1,55 @@
+body {
+    margin: 0;
+    padding: 20px;
+    height: 100vh;
+    box-sizing: border-box; /* This makes sure padding doesn't increase body size */
+    overflow-y: auto; /* Allows scrolling if content exceeds viewport height */
+    font-family: Arial, sans-serif; /* Optional: for better font styling */
+}
+button {
+  cursor: pointer;
+}
+.hidden {
+    display: none;
+}
+#tooltip {
+  position: absolute;
+  background-color: #555;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.9;
+  white-space: nowrap;
+  z-index: 10;
+}
+pre#gptResultContent {
+    white-space: pre-wrap; /* Allows wrapping of text */
+    word-wrap: break-word; /* Breaks long words if necessary */
+    max-height: calc(100vh - 100px); /* Adjust accordingly to account for other elements and padding */
+    overflow-y: auto; /* Adds scrollbar if content exceeds max-height */
+    margin-bottom: 20px; /* Space before the button */
+}
+button#copyButton {
+    display: block;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin: 0 auto; /* Center the button horizontally */
+}
+
+button#copyButton:hover {
+    background-color: #2980b9;
+}
+
+button#copyButton img {
+    vertical-align: middle; /* Aligns the image to the middle of the text */
+    margin-right: 5px;
+}
