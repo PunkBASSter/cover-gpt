@@ -13,7 +13,7 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
   }
 });
 
-async function openCoverLetterWindow(jobDescription) { 
+const openCoverLetterWindow = async (jobDescription) => { 
   const promptFormat = await chrome.storage.sync.get('promptFormat');
   const cv = await chrome.storage.sync.get('cvText');
   const msg = stringFormat(promptFormat.promptFormat, jobDescription, cv.cvText);
@@ -22,7 +22,7 @@ async function openCoverLetterWindow(jobDescription) {
   showResultWindow();
 }
 
-function showResultWindow() {
+const showResultWindow = () => {
   chrome.windows.create({
     url: chrome.runtime.getURL('resultWindow.html'),
     type: 'popup',
@@ -31,7 +31,7 @@ function showResultWindow() {
   });
 }
 
-function stringFormat(formatStr, ...args) {
+const stringFormat = (formatStr, ...args) => {
   if (typeof formatStr !== 'string') {
       throw new Error(`A string expected but ${typeof formatStr} given.}`);
   }

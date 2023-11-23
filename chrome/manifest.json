@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "CV Analyzer",
+    "name": "Cover Letter GPT",
     "version": "1.0",
-    "description": "Analyze Job Description against your CV",
+    "description": "Generates a customized cover letter using OpenAI GPT API. Required settings: 1.Your CV text; 2.OpenAI API token; 3.Prompt template text. With all settings provided select a job description, right click -> Generate Cover Letter. The selection will be included into GPT prompt as Job Description.",
     "background": {
       "service_worker": "background.js"
     },

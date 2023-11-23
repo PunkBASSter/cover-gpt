@@ -1,4 +1,4 @@
-function sendChatToOpenAI(apiToken, messages) {
+const sendChatToOpenAI = (apiToken, messages) => {
   const OPENAI_CHAT_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
   return fetch(OPENAI_CHAT_ENDPOINT, {
     method: 'POST',
@@ -8,7 +8,7 @@ function sendChatToOpenAI(apiToken, messages) {
       'Accept': 'application/json'
     },
     body: JSON.stringify({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4",
       messages: messages
     })
   })
